@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/skyvue-io/skyvue-serverless#readme",
   "dependencies": {
-    "aws-sdk": "^2.863.0"
+    "aws-sdk": "^2.863.0",
+    "random-words": "^1.1.1"
   }
 }
