@@ -1,0 +1,22 @@
+{
+  "name": "skyvue-dataset-uploads",
+  "version": "1.0.0",
+  "description": "Lambda function to handle the service that manages Skyvue dataset uploads.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skyvue-io/skyvue-serverless.git"
+  },
+  "author": "Tristan Tarpley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skyvue-io/skyvue-serverless/issues"
+  },
+  "homepage": "https://github.com/skyvue-io/skyvue-serverless#readme",
+  "dependencies": {
+    "aws-sdk": "^2.863.0"
+  }
+}
