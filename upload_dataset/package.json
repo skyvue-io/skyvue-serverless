@@ -4,7 +4,7 @@
   "description": "Lambda function to handle the service that manages Skyvue dataset uploads.",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "echo \"testing\""
   },
   "repository": {
     "type": "git",
