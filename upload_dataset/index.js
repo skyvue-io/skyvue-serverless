@@ -3,26 +3,14 @@ const dataset = require('./models/Dataset');
 
 require('dotenv').config();
 
-// const handleMongoError = err => {
-//   console.error(`Mongoose connection error: ${err}`);
-//   process.exit(1);
-// };
-
-// const connectToDB = async () => {
-//   await mongoose
-//     .connect(process.env.DB_URI, {
-//       useNewUrlParser: true,
-//       useFindAndModify: false,
-//       useCreateIndex: true,
-//       useUnifiedTopology: true,
-//     })
-//     .catch(handleMongoError);
-
-//   mongoose.connection.on('error', handleMongoError);
-// }
-
-// connectToDB();
 let conn = null;
+
+const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
+const s3 = new aws.S3({
+  endpoint: spacesEndpoint,
+  accessKeyId: process.env.SPACES_KEY,
+  secretAccessKey: process.env.SPACES_SECRET,
+});
 
 exports.handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -48,7 +36,7 @@ exports.handler = async (event, context) => {
 
   const Dataset = conn.model('dataset');
 
-  new Dataset({
+  const testing = new Dataset({
     userId: 'testing',
     title: 'testing',
     visibilitySettings: {
@@ -57,6 +45,15 @@ exports.handler = async (event, context) => {
       viewers: [],
     }
   }).save();
+
+  const s3Params = {
+    Bucket: 'skyvue-datasets',
+    Key: testing._id.toString(),
+    Body: JSON.stringify({ testing: 'hello world' }),
+    ContentType: 'application/json',
+  };
+
+  await s3.putObject(s3Params).promise();
 
   const response = {
     statusCode: 200,
