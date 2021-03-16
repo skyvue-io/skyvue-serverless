@@ -34,6 +34,8 @@ exports.handler = async event => {
     },
   }).save()
 
+  console.log('why is this not working')
+
   const response = {
     statusCode: 200,
     body: JSON.stringify(process.env.TESTING),
