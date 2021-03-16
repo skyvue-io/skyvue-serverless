@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Dataset = require('./models/Dataset');
 
 require('dotenv').config();
 
@@ -23,7 +24,16 @@ const connectToDB = async () => {
 connectToDB();
 
 exports.handler = async event => {
-  const body = JSON.parse(event.body);
+  new Dataset({
+    userId: 'blah',
+    title: 'blah',
+    visibilitySettings: {
+      owner: 'blah',
+      editors: ['blah'],
+      viewers: ['blah'],
+    },
+  }).save()
+
   const response = {
     statusCode: 200,
     body: JSON.stringify(process.env.TESTING),
