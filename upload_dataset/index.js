@@ -49,7 +49,7 @@ exports.handler = async (event, context) => {
 
   const s3Params = {
     Bucket: 'skyvue-datasets',
-    Key: testing._id.toString(),
+    Key: 'testing',
     Body: JSON.stringify({ testing: 'hello world' }),
     ContentType: 'application/json',
   };
