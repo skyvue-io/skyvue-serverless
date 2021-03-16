@@ -24,7 +24,7 @@ const connectToDB = async () => {
 connectToDB();
 
 exports.handler = async event => {
-  new Dataset({
+  const dataset = new Dataset({
     userId: 'blah',
     title: 'blah',
     visibilitySettings: {
@@ -32,13 +32,13 @@ exports.handler = async event => {
       editors: ['blah'],
       viewers: ['blah'],
     },
-  }).save()
+  })
 
-  console.log('why is this not working')
+  dataset.save();
 
   const response = {
     statusCode: 200,
-    body: JSON.stringify('blah'),
+    body: JSON.stringify(dataset._id),
   };
   return response;
 };
