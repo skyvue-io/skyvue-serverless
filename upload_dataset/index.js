@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const aws = require('aws-sdk');
 const dataset = require('./models/Dataset');
 
 require('dotenv').config();
