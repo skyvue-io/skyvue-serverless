@@ -1,10 +1,10 @@
 const randomWords = require('random-words');
 
 exports.handler = async event => {
-  console.log('hello world');
+  const { body } = JSON.parse(event);
   const response = {
     statusCode: 200,
-    body: JSON.stringify(event),
+    body: JSON.stringify(body),
   };
   return response;
 };
