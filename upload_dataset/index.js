@@ -43,7 +43,7 @@ exports.handler = async (event, context) => {
     // `await`ing connection after assigning to the `conn` variable
     // to avoid multiple function calls creating new connections
     await conn;
-    conn.model('dataset', Dataset);
+    conn.model('dataset', dataset);
   }
 
   const Dataset = conn.model('dataset');
