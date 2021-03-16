@@ -15,4 +15,4 @@ const Dataset = new Mongoose.Schema(
   },
 );
 
-module.exports = Mongoose.model('dataset', Dataset);
+module.exports = Dataset;

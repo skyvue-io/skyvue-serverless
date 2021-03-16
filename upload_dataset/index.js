@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// const Dataset = require('./models/Dataset');
+const dataset = require('./models/Dataset');
 
 require('dotenv').config();
 
@@ -43,16 +43,24 @@ exports.handler = async (event, context) => {
     // `await`ing connection after assigning to the `conn` variable
     // to avoid multiple function calls creating new connections
     await conn;
-    conn.model('Test', new mongoose.Schema({ name: String }));
+    conn.model('dataset', Dataset);
   }
 
-  const M = conn.model('Test');
+  const Dataset = conn.model('dataset');
 
-  new M({ name: 'testing' }).save();
+  new Dataset({
+    userId: 'testing',
+    title: 'testing',
+    visibilitySettings: {
+      owner: 'string',
+      editors: [],
+      viewers: [],
+    }
+  }).save();
 
   const response = {
     statusCode: 200,
-    body: JSON.stringify('let\'s try this'),
+    body: JSON.stringify('let\'s try this!'),
   };
   return response;
 };
