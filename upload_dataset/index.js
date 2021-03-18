@@ -14,7 +14,7 @@ const s3 = new aws.S3({
 });
 
 exports.handler = async (event, context) => {
-  const { body } = event;
+  const body = JSON.parse(event.body);
 
   if (!body.datasetId) return {
     statusCode: 400,
