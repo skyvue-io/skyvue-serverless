@@ -17,12 +17,12 @@ exports.handler = async (event, context) => {
   const { body } = event;
 
   if (!body.datasetId) return {
-    status: 400,
+    statusCode: 400,
     message: "Missing datasetId",
   }
 
   return {
-    status: 200,
+    statusCode: 200,
     body: body.datasetId,
   }
 
@@ -38,7 +38,8 @@ exports.handler = async (event, context) => {
       // disconnected from MongoDB and send them when it reconnects.
       // With serverless, better to fail fast if not connected.
       bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0 // and MongoDB driver buffering
+      bufferMaxEntries: 0, // and MongoDB driver buffering
+      useNewUrlParser: true,
     });
 
     // `await`ing connection after assigning to the `conn` variable
@@ -69,7 +70,7 @@ exports.handler = async (event, context) => {
   await s3.putObject(s3Params).promise();
 
   const response = {
-    status: 200,
+    statusCode: 200,
     body: JSON.stringify('let\'s try this!'),
   };
   return response;
