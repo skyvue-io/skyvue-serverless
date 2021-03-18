@@ -14,6 +14,18 @@ const s3 = new aws.S3({
 });
 
 exports.handler = async (event, context) => {
+  const { body } = event;
+
+  if (!body.datasetId) return {
+    status: 400,
+    message: "Missing datasetId",
+  }
+
+  return {
+    status: 200,
+    message: body.datasetId,
+  }
+
   context.callbackWaitsForEmptyEventLoop = false;
 
   // Because `conn` is in the global scope, Lambda may retain it between
@@ -57,7 +69,7 @@ exports.handler = async (event, context) => {
   await s3.putObject(s3Params).promise();
 
   const response = {
-    statusCode: 200,
+    status: 200,
     body: JSON.stringify('let\'s try this!'),
   };
   return response;
