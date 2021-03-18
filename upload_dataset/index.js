@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
 
   return {
     statusCode: 200,
-    body: body.datasetId,
+    body: JSON.stringify(body.datasetId),
   }
 
   context.callbackWaitsForEmptyEventLoop = false;
