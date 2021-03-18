@@ -3,7 +3,7 @@ const Mongoose = require('mongoose');
 const Dataset = new Mongoose.Schema(
   {
     isProcessing: {
-      type: boolean,
+      type: Boolean,
       default: true,
     },
     userId: String,
