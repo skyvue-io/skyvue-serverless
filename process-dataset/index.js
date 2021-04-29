@@ -30,6 +30,6 @@ exports.handler = async event => {
   // const results = await redshift.query('select * from information_schema.tables');
 
   return new Promise((resolve, reject) => {
-    axios.get('https://swapi.dev/api/people/1/').then(data => resolve(data));
+    axios.get('https://swapi.dev/api/people/1/').then(data => resolve(data.data));
   });
 };
