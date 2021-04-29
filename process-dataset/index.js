@@ -1,4 +1,4 @@
-require('dotenv').connect();
+require('dotenv').config();
 const { Client } = require('pg');
 
 const {
