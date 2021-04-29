@@ -22,6 +22,8 @@ exports.handler = async (event, context) => {
   const client = new Client(dbParams);
   await client.connect();
 
+  console.log('client is connected');
+
   // const results = await redshift.query('select * from information_schema.tables');
 
   // return new Promise((resolve, reject) => {
