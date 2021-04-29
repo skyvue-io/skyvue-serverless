@@ -24,18 +24,7 @@ const makeRedshift = async () => {
   return client;
 };
 
-exports.handler = event => {
-  const run = async () => {
-    const redshift = await makeRedshift();
-    const res = await redshift.query('select * from information_schema.tables');
-
-    console.log(res);
-  };
-
-  run();
-
-  return {
-    success: true,
-    statusCode: 200,
-  };
+exports.handler = async event => {
+  const redshift = await makeRedshift();
+  return redshift.query('select * from information_schema.tables');
 };
