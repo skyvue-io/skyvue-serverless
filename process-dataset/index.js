@@ -11,7 +11,6 @@ const {
 } = process.env;
 
 exports.handler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false;
   const dbParams = {
     user: REDSHIFT_USER,
     database: REDSHIFT_DB,
@@ -24,6 +23,10 @@ exports.handler = async (event, context) => {
 
   console.log('client is connected');
 
+  client.query('select * from information_schema.tables', [], (x, y) => {
+    console.log(x, y);
+  });
+
   // const results = await redshift.query('select * from information_schema.tables');
 
   // return new Promise((resolve, reject) => {
@@ -35,3 +38,5 @@ exports.handler = async (event, context) => {
       .then(data => resolve(data.rows));
   });
 };
+
+exports.handler({}, {});
