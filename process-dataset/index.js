@@ -29,7 +29,6 @@ exports.handler = async event => {
   // const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 
   const redshift = await makeRedshift();
-  console.log(REDSHIFT_DB, REDSHIFT_HOST);
   const results = await redshift.query('select * from information_schema.tables');
   console.log('here are the results!', results);
 
@@ -39,5 +38,5 @@ exports.handler = async event => {
     body: JSON.stringify(results),
   };
 
-  return response;
+  return new Promise((resolve, reject) => resolve(200));
 };
