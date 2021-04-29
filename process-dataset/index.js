@@ -26,6 +26,7 @@ const makeRedshift = async () => {
 
 exports.handler = async event => {
   const redshift = await makeRedshift();
+  console.log('redshift exists', redshift);
   return JSON.stringify(event);
   // return redshift.query('select * from information_schema.tables');
 };
