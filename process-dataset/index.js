@@ -28,7 +28,7 @@ exports.handler = async event => {
   // const bucket = event.Records[0].s3.bucket.name;
   // const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 
-  const redshift = await makeRedshift(client);
+  const redshift = await makeRedshift();
 
   // console.log('successful invokation!!', bucket, key);
   console.log(await redshift.query('select * from information_schema.tables'));
