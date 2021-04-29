@@ -10,15 +10,14 @@ const {
   REDSHIFT_HOST,
 } = process.env;
 
-const dbParams = {
-  user: REDSHIFT_USER,
-  database: REDSHIFT_DB,
-  password: REDSHIFT_PW,
-  port: REDSHIFT_PORT,
-  host: REDSHIFT_HOST,
-};
-
 const makeRedshift = async () => {
+  const dbParams = {
+    user: REDSHIFT_USER,
+    database: REDSHIFT_DB,
+    password: REDSHIFT_PW,
+    port: REDSHIFT_PORT,
+    host: REDSHIFT_HOST,
+  };
   const client = new Client(dbParams);
   await client.connect();
 
