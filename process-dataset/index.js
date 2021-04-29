@@ -29,14 +29,13 @@ exports.handler = async event => {
   // const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 
   const redshift = await makeRedshift();
-
-  // console.log('successful invokation!!', bucket, key);
-  console.log(await redshift.query('select * from information_schema.tables'));
+  console.log('redshift is connected...');
+  const results = await redshift.query('select * from information_schema.tables');
 
   // TODO implement
   const response = {
     statusCode: 200,
-    body: JSON.stringify(event),
+    body: JSON.stringify(results),
   };
 
   return response;
