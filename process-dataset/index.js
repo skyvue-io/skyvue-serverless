@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client } = require('pg');
+const axios = require('axios');
 
 const {
   REDSHIFT_DB,
@@ -29,6 +30,6 @@ exports.handler = async event => {
   // const results = await redshift.query('select * from information_schema.tables');
 
   return new Promise((resolve, reject) => {
-    resolve('hello world');
+    axios.get('https://swapi.dev/api/people/1/').then(data => resolve(data));
   });
 };
