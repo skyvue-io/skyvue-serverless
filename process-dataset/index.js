@@ -10,7 +10,8 @@ const {
   REDSHIFT_HOST,
 } = process.env;
 
-const makeRedshift = async () => {
+exports.handler = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
   const dbParams = {
     user: REDSHIFT_USER,
     database: REDSHIFT_DB,
@@ -21,18 +22,13 @@ const makeRedshift = async () => {
   const client = new Client(dbParams);
   await client.connect();
 
-  return client;
-};
-
-exports.handler = async event => {
-  const redshift = await makeRedshift();
   // const results = await redshift.query('select * from information_schema.tables');
 
   // return new Promise((resolve, reject) => {
   //   axios.get('https://swapi.dev/api/people/1/').then(data => resolve(data.data));
   // });
   return new Promise((resolve, reject) => {
-    redshift
+    client
       .query('select * from information_schema.tables')
       .then(data => resolve(data.rows));
   });
