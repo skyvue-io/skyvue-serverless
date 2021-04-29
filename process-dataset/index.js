@@ -24,12 +24,18 @@ const makeRedshift = async () => {
   return client;
 };
 
-exports.handler = async event =>
-  new Promise((resolve, reject) => {
-    makeRedshift()
-      .then(redshift => redshift.query('select * from information_schema.tables'))
-      .then(res => {
-        console.log('here is the data');
-        resolve(res);
-      });
-  });
+exports.handler = event => {
+  const run = async () => {
+    const redshift = await makeRedshift();
+    const res = await redshift.query('select * from information_schema.tables');
+
+    console.log(res);
+  };
+
+  run();
+
+  return {
+    success: true,
+    statusCode: 200,
+  };
+};
