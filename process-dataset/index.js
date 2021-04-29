@@ -28,15 +28,18 @@ exports.handler = async event => {
   // const bucket = event.Records[0].s3.bucket.name;
   // const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 
-  const redshift = await makeRedshift();
-  const results = await redshift.query('select * from information_schema.tables');
-  console.log('here are the results!', results);
-
   // TODO implement
   const response = {
     statusCode: 200,
     body: JSON.stringify(results),
   };
 
-  return new Promise((resolve, reject) => resolve(200));
+  return new Promise((resolve, reject) => {
+    makeRedshift()
+      .then(redshift => redshift.query('select * from information_schema.tables'))
+      .then(res => {
+        console.log('here is the data');
+        resolve(res);
+      });
+  });
 };
