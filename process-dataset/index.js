@@ -4,10 +4,12 @@ const axios = require('axios');
 
 exports.handler = async (event, context) => {
   const client = new Client();
+  console.log('I am called', process.env.PGHOST);
   await client.connect();
 
+  console.log('I am still getting hung up here');
   const results = await client.query('select * from information_schema.tables');
-  console.log(results);
+  console.log('I am still getting hung up here');
 
   // const test = await axios.get('https://swapi.dev/api/people/1/');
   // console.log(test.data);
@@ -18,12 +20,6 @@ exports.handler = async (event, context) => {
   return new Promise((resolve, reject) => {
     client
       .query('select * from information_schema.tables')
-      .then(res => {
-        console.log(res.rows);
-        return res;
-      })
       .then(data => resolve(data.rows));
   });
 };
-
-console.log(exports.handler());
