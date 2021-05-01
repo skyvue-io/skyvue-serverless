@@ -19,9 +19,15 @@ exports.handler = async (event, context) => {
     host: REDSHIFT_HOST,
   };
   const client = new Client(dbParams);
+  const connected = await client.authenticate();
+  console.log(connected);
   await client.connect();
 
-  // const results = await redshift.query('select * from information_schema.tables');
+  const results = await client.query('select * from information_schema.tables');
+  console.log(results);
+
+  // const test = await axios.get('https://swapi.dev/api/people/1/');
+  // console.log(test.data);
 
   // return new Promise((resolve, reject) => {
   //   axios.get('https://swapi.dev/api/people/1/').then(data => resolve(data.data));
@@ -29,6 +35,12 @@ exports.handler = async (event, context) => {
   return new Promise((resolve, reject) => {
     client
       .query('select * from information_schema.tables')
+      .then(res => {
+        console.log(res.rows);
+        return res;
+      })
       .then(data => resolve(data.rows));
   });
 };
+
+console.log(exports.handler());
