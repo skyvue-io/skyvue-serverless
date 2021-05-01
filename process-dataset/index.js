@@ -8,7 +8,13 @@ exports.handler = async (event, context) => {
   await client.connect();
 
   console.log('I am still getting hung up here');
-  console.log(Object.keys(client), client._queryable, client._connected);
+  console.log(
+    Object.keys(client),
+    client.database,
+    client.host,
+    client._queryable,
+    client._connected,
+  );
   const results = await client.query('select * from information_schema.tables');
   console.log('Now I cannot get the query', results?.rows);
 
