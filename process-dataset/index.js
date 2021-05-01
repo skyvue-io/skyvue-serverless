@@ -1,6 +1,5 @@
 require('dotenv').config();
-const { Client } = require('pg');
-const axios = require('axios');
+const { Pool } = require('pg');
 
 const {
   REDSHIFT_DB,
@@ -17,15 +16,12 @@ exports.handler = async (event, context) => {
     password: REDSHIFT_PW,
     port: REDSHIFT_PORT,
     host: REDSHIFT_HOST,
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
   };
-  const client = new Client(dbParams);
+  const client = new Pool(dbParams);
   await client.connect();
-
-  console.log('client is connected');
-
-  client.query('select * from information_schema.tables', [], (x, y) => {
-    console.log(x, y);
-  });
 
   // const results = await redshift.query('select * from information_schema.tables');
 
