@@ -16,9 +16,8 @@ const awsConfig = new aws.Config({
 });
 const s3 = new aws.S3(awsConfig);
 
-const redshift = new Client();
-
 exports.handler = async (event, context) => {
+  const redshift = new Client();
   await redshift.connect();
   console.log(event);
   const Bucket = event.Records[0].s3.bucket.name;
