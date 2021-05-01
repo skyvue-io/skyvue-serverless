@@ -36,8 +36,9 @@ exports.handler = async (event, context) => {
   // execute itttt
 
   return new Promise((resolve, reject) => {
-    redshift
-      .query('select * from information_schema.tables')
-      .then(data => resolve(data.rows));
+    redshift.query('select * from information_schema.tables').then(data => {
+      redshift.end();
+      resolve(data.rows);
+    });
   });
 };
