@@ -1,22 +1,10 @@
 require('dotenv').config();
 const { Client } = require('pg');
-const axios = require('axios');
 
 exports.handler = async (event, context) => {
   const client = new Client();
   console.log('I am called', process.env.PGHOST);
   await client.connect();
-
-  console.log('I am still getting hung up here');
-  console.log(
-    Object.keys(client),
-    client.database,
-    client.host,
-    client._queryable,
-    client._connected,
-  );
-  const results = await client.query('select * from information_schema.tables');
-  console.log('Now I cannot get the query', results?.rows);
 
   // const test = await axios.get('https://swapi.dev/api/people/1/');
   // console.log(test.data);
