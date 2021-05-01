@@ -20,6 +20,7 @@ const redshift = new Client();
 
 exports.handler = async (event, context) => {
   await redshift.connect();
+  console.log(event);
   const Bucket = event.Records[0].s3.bucket.name;
   const Key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
   const params = {
