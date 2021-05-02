@@ -7,7 +7,9 @@ const knex = require('knex')({
 });
 const R = require('ramda');
 
-const parseDataType = require('./parseDataType');
+const parseDataType = require('./lib/parseDataType');
+
+const selectFirst500Rows = require('./services/selectFirst500Rows');
 
 const awsConfig = new aws.Config({
   region: 'us-east-2',
@@ -19,13 +21,17 @@ const s3 = new aws.S3(awsConfig);
 exports.handler = async (event, context) => {
   const redshift = new Client();
   await redshift.connect();
-  console.log(event);
+
   const Bucket = event.Records[0].s3.bucket.name;
   const Key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
   const params = {
     Bucket,
     Key,
   };
+
+  const first500Rows = await selectFirst500Rows(s3, params);
+
+  console.log(first500Rows);
 
   // extract column information
   // parse data types

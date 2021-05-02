@@ -11,6 +11,7 @@
   "dependencies": {
     "aws-sdk": "^2.895.0",
     "axios": "^0.21.1",
+    "csvtojson": "^2.0.10",
     "date-fns": "^2.21.1",
     "dotenv": "^8.2.0",
     "knex": "^0.95.4",

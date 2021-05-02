@@ -1,7 +1,7 @@
 const { isValid } = require('date-fns');
 
 const parseDataType = value => {
-  if (/^-?(0|[1-9]\d*)(\.\d+)?$/.test(value)) {
+  if (/^-?(0|[1-9]\d*)(\.\d+)?$/.test(value.replace(/,/g, ''))) {
     return 'number';
   }
   if (isValid(new Date(value))) {
