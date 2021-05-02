@@ -30,6 +30,31 @@ exports.handler = async (event, context) => {
     Key,
   };
 
+  const params_ = {
+    ...params,
+    ExpressionType: 'SQL',
+    Expression: 'SELECT * FROM S3Object limit 500',
+    InputSerialization: {
+      CSV: {
+        FileHeaderInfo: 'USE',
+        RecordDelimiter: '\n',
+        FieldDelimiter: ',',
+      },
+    },
+    OutputSerialization: {
+      CSV: {},
+    },
+  };
+
+  const res = await s3.selectObjectContent(params_).promise();
+  const events = res.Payload;
+
+  for await (const event of events) {
+    if (event.Records) {
+      console.log(event.Records.Payload.toString());
+    }
+  }
+
   // const first500Rows = await selectFirst500Rows(s3, params);
 
   // console.log(first500Rows);
