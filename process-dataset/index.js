@@ -6,6 +6,7 @@ const knex = require('knex')({
   client: 'redshift',
 });
 const R = require('ramda');
+const { v4: uuid } = require('uuid');
 
 const selectFirst500Rows = require('./services/selectFirst500Rows');
 
@@ -22,24 +23,44 @@ exports.handler = async (event, context) => {
   const redshift = new Client();
   await redshift.connect();
 
-  const first500Rows = await selectFirst500Rows(s3, {
-    Bucket: event.Records[0].s3.bucket.name,
-    Key: decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
-  });
+  const columns = await extractColumnData(
+    await selectFirst500Rows(s3, {
+      Bucket: event.Records[0].s3.bucket.name,
+      Key: decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
+    }),
+  );
 
-  const columnData = await extractColumnData(first500Rows);
+  const boardId = uuid();
 
-  console.log(columnData);
+  await s3
+    .putObject({
+      Bucket: 'skyvue-datasets',
+      ContentType: 'text/csv',
+      Key: `${boardId}/columns/${0}`,
+      Body: JSON.stringify({
+        columns,
+        layerToggles: {
+          groupings: true,
+          filters: true,
+          joins: true,
+          smartColumns: true,
+        },
+      }),
+    })
+    .promise();
 
-  // extract column information
-  // parse data types
-  // upload columns to S3 or Mongo? TODO figure this out
-  // generate create table query according to colIds
-  // generate insert query
-  // execute itttt
+  /*
+    - create two tables:
+      - Key
+      - boardId
+
+    - UNLOAD(select colName as colId from Key)
+      TO 's3://skyvue-datasets/{boardId}'
+      AS CSV
+  */
 
   return new Promise((resolve, reject) => {
-    resolve(columnData);
+    resolve(JSON.stringify({ columns, boardId }));
     // redshift.query('select * from information_schema.tables').then(data => {
     //   redshift.end();
     //   resolve(data.rows);
