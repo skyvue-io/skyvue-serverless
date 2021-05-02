@@ -11,6 +11,7 @@ const parseDataType = require('./lib/parseDataType');
 
 const selectFirst500Rows = require('./services/selectFirst500Rows');
 
+console.log(process.env.AWS_ACCESSKEY);
 const awsConfig = new aws.Config({
   region: 'us-east-2',
   accessKeyId: process.env.AWS_ACCESSKEY,
