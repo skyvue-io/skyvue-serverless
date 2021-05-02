@@ -7,7 +7,7 @@ const selectFirst500Rows = async (s3, s3Params) => {
     Expression: 'SELECT * FROM S3Object limit 500',
     InputSerialization: {
       CSV: {
-        FileHeaderInfo: 'USE',
+        FileHeaderInfo: 'NONE',
         RecordDelimiter: '\n',
         FieldDelimiter: ',',
       },
