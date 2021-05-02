@@ -17,12 +17,15 @@ const selectFirst500Rows = async (s3, s3Params) => {
 
   const res = await s3.selectObjectContent(params).promise();
   const events = res.Payload;
+  let response = '';
 
   for await (const event of events) {
     if (event.Records) {
-      console.log(event.Records.Payload.toString());
+      response += event.Records.Payload.toString();
     }
   }
+
+  return response;
 };
 
 module.exports = selectFirst500Rows;
