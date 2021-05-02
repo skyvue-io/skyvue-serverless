@@ -27,7 +27,7 @@ exports.handler = async (event, context) => {
     Key: decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
   });
 
-  const columnData = extractColumnData(first500Rows);
+  const columnData = await extractColumnData(first500Rows);
 
   console.log(columnData);
 
@@ -39,9 +39,10 @@ exports.handler = async (event, context) => {
   // execute itttt
 
   return new Promise((resolve, reject) => {
-    redshift.query('select * from information_schema.tables').then(data => {
-      redshift.end();
-      resolve(data.rows);
-    });
+    resolve(columnData);
+    // redshift.query('select * from information_schema.tables').then(data => {
+    //   redshift.end();
+    //   resolve(data.rows);
+    // });
   });
 };
