@@ -12,9 +12,7 @@ const parseDataType = require('./lib/parseDataType');
 const selectFirst500Rows = require('./services/selectFirst500Rows');
 
 exports.handler = async (event, context) => {
-  console.log('I am called, ', process.env.AWS_SECRET_ACCESSKEY);
   const awsConfig = new aws.Config({
-    region: 'us-east-2',
     accessKeyId: process.env.AWS_ACCESSKEY,
     secretAccessKey: process.env.AWS_SECRET_ACCESSKEY,
   });
