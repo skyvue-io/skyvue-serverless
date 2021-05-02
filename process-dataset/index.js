@@ -7,9 +7,9 @@ const knex = require('knex')({
 });
 const R = require('ramda');
 
-const parseDataType = require('./lib/parseDataType');
-
 const selectFirst500Rows = require('./services/selectFirst500Rows');
+
+const extractColumnData = require('./lib/extractColumnData');
 
 exports.handler = async (event, context) => {
   const awsConfig = new aws.Config({
@@ -22,12 +22,20 @@ exports.handler = async (event, context) => {
   const redshift = new Client();
   await redshift.connect();
 
-  const first500Rows = await selectFirst500Rows(s3, {
+  // const first500Rows = await selectFirst500Rows(s3, {
+  //   Bucket: event.Records[0].s3.bucket.name,
+  //   Key: decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
+  // });
+
+  const columnData = R.pipe(
+    selectFirst500Rows(s3),
+    R.andThen(extractColumnData),
+  )({
     Bucket: event.Records[0].s3.bucket.name,
     Key: decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
   });
 
-  console.log(first500Rows);
+  console.log(columnData);
 
   // extract column information
   // parse data types
