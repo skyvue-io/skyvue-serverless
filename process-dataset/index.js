@@ -29,39 +29,30 @@ exports.handler = async (event, context) => {
     Key,
   };
 
-  const res = await s3
-    .getObject({
-      Bucket: 'skyvue-datasets-queue',
-      Key: 'P9-Owners.csv',
-    })
-    .promise();
+  const params_ = {
+    ...params,
+    ExpressionType: 'SQL',
+    Expression: 'SELECT * FROM S3Object limit 500',
+    InputSerialization: {
+      CSV: {
+        FileHeaderInfo: 'USE',
+        RecordDelimiter: '\n',
+        FieldDelimiter: ',',
+      },
+    },
+    OutputSerialization: {
+      CSV: {},
+    },
+  };
 
-  console.log(res.Body);
+  const res = await s3.selectObjectContent(params_).promise();
+  const events = res.Payload;
 
-  // const params_ = {
-  //   ...params,
-  //   ExpressionType: 'SQL',
-  //   Expression: 'SELECT * FROM S3Object limit 500',
-  //   InputSerialization: {
-  //     CSV: {
-  //       FileHeaderInfo: 'USE',
-  //       RecordDelimiter: '\n',
-  //       FieldDelimiter: ',',
-  //     },
-  //   },
-  //   OutputSerialization: {
-  //     CSV: {},
-  //   },
-  // };
-
-  // const res = await s3.selectObjectContent(params_).promise();
-  // const events = res.Payload;
-
-  // for await (const event of events) {
-  //   if (event.Records) {
-  //     console.log(event.Records.Payload.toString());
-  //   }
-  // }
+  for await (const event of events) {
+    if (event.Records) {
+      console.log(event.Records.Payload.toString());
+    }
+  }
 
   // const first500Rows = await selectFirst500Rows(s3, params);
 
