@@ -13,6 +13,7 @@ const selectFirst500Rows = require('./services/selectFirst500Rows');
 
 exports.handler = async (event, context) => {
   const awsConfig = new aws.Config({
+    region: 'us-east-2',
     accessKeyId: process.env.AWS_ACCESSKEY,
     secretAccessKey: process.env.AWS_SECRET_ACCESSKEY,
   });
@@ -28,30 +29,39 @@ exports.handler = async (event, context) => {
     Key,
   };
 
-  const params_ = {
-    ...params,
-    ExpressionType: 'SQL',
-    Expression: 'SELECT * FROM S3Object limit 500',
-    InputSerialization: {
-      CSV: {
-        FileHeaderInfo: 'USE',
-        RecordDelimiter: '\n',
-        FieldDelimiter: ',',
-      },
-    },
-    OutputSerialization: {
-      CSV: {},
-    },
-  };
+  const res = await s3
+    .getObject({
+      Bucket: 'skyvue-datasets-queue',
+      Key: 'P9-Owners.csv',
+    })
+    .promise();
 
-  const res = await s3.selectObjectContent(params_).promise();
-  const events = res.Payload;
+  console.log(res.Body);
 
-  for await (const event of events) {
-    if (event.Records) {
-      console.log(event.Records.Payload.toString());
-    }
-  }
+  // const params_ = {
+  //   ...params,
+  //   ExpressionType: 'SQL',
+  //   Expression: 'SELECT * FROM S3Object limit 500',
+  //   InputSerialization: {
+  //     CSV: {
+  //       FileHeaderInfo: 'USE',
+  //       RecordDelimiter: '\n',
+  //       FieldDelimiter: ',',
+  //     },
+  //   },
+  //   OutputSerialization: {
+  //     CSV: {},
+  //   },
+  // };
+
+  // const res = await s3.selectObjectContent(params_).promise();
+  // const events = res.Payload;
+
+  // for await (const event of events) {
+  //   if (event.Records) {
+  //     console.log(event.Records.Payload.toString());
+  //   }
+  // }
 
   // const first500Rows = await selectFirst500Rows(s3, params);
 
