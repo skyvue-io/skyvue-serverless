@@ -30,9 +30,9 @@ exports.handler = async (event, context) => {
     Key,
   };
 
-  const first500Rows = await selectFirst500Rows(s3, params);
+  // const first500Rows = await selectFirst500Rows(s3, params);
 
-  console.log(first500Rows);
+  // console.log(first500Rows);
 
   // extract column information
   // parse data types
