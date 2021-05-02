@@ -30,6 +30,10 @@ exports.handler = async (event, context) => {
     }),
   );
 
+  console.log(
+    decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
+  );
+
   const boardId = uuid();
 
   await s3
@@ -55,7 +59,7 @@ exports.handler = async (event, context) => {
       - boardId
 
     - UNLOAD(select colName as colId from Key)
-      TO 's3://skyvue-datasets/{boardId}'
+      TO 's3://skyvue-datasets/{boardId}/rows/'
       AS CSV
   */
 
