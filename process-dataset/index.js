@@ -30,10 +30,6 @@ exports.handler = async (event, context) => {
     }),
   );
 
-  console.log(
-    decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
-  );
-
   const boardId = uuid();
 
   await s3
