@@ -1,3 +1,5 @@
+const csv = require('csvtojson');
+
 const selectFirst500Rows = async (s3, s3Params) => {
   const params = {
     ...s3Params,
@@ -25,7 +27,7 @@ const selectFirst500Rows = async (s3, s3Params) => {
     }
   }
 
-  return response;
+  return csv().fromString(response);
 };
 
 module.exports = selectFirst500Rows;
