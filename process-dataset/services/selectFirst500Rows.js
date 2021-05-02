@@ -10,6 +10,9 @@ const selectFirst500Rows = async (s3, s3Params) => {
         FieldDelimiter: ',',
       },
     },
+    OutputSerialization: {
+      CSV: {},
+    },
   };
 
   const res = await s3.selectObjectContent(params).promise();
