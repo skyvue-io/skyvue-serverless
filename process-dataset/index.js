@@ -11,15 +11,14 @@ const parseDataType = require('./lib/parseDataType');
 
 const selectFirst500Rows = require('./services/selectFirst500Rows');
 
-console.log(process.env.AWS_ACCESSKEY);
-const awsConfig = new aws.Config({
-  region: 'us-east-2',
-  accessKeyId: process.env.AWS_ACCESSKEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESSKEY,
-});
-const s3 = new aws.S3(awsConfig);
-
 exports.handler = async (event, context) => {
+  const awsConfig = new aws.Config({
+    region: 'us-east-2',
+    accessKeyId: process.env.AWS_ACCESSKEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESSKEY,
+  });
+  const s3 = new aws.S3(awsConfig);
+
   const redshift = new Client();
   await redshift.connect();
 
