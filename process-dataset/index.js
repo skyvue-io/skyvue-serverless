@@ -54,13 +54,13 @@ exports.handler = async (event, context) => {
     })
     .promise();
 
-  await redshift.query(createUnprocessedTableQuery(key.slice(0, -1), columns));
   console.log(createUnprocessedTableQuery(key.slice(0, -1), columns));
+  await redshift.query(createUnprocessedTableQuery(key.slice(0, -1), columns));
 
+  console.log(createUnloadSelectQuery(key.slice(0, -2), columns));
   await redshift.query(
     createUnloadQuery(createUnloadSelectQuery(key.slice(0, -2), columns), boardId),
   );
-  console.log(createUnloadSelectQuery(key.slice(0, -2), columns));
 
   /*
     - create two tables:
