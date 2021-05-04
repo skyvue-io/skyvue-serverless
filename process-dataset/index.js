@@ -30,6 +30,7 @@ exports.handler = async (event, context) => {
   await redshift.connect();
 
   const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
+  console.log(key);
   const columns = await extractColumnData(
     await selectFirst500Rows(s3, {
       Bucket: event.Records[0].s3.bucket.name,
