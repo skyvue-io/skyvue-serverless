@@ -11,8 +11,7 @@ const createUnprocessedTableQuery = (key, columns) =>
       });
     })
     .toString()
-    .replace('create table', 'create external table')
-    .slice(0, -1) +
+    .replace('create table', 'create external table') +
   `
       ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
       STORED AS TEXTFILE
