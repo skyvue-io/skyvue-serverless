@@ -62,6 +62,8 @@ exports.handler = async (event, context) => {
     createUnloadQuery(createUnloadSelectQuery(key.slice(0, -2), columns), boardId),
   );
 
+  console.log(createPermanentStorageTableQuery(boardId, columns));
+
   /*
     - create two tables:
       - Key
