@@ -2,9 +2,6 @@ require('dotenv').config();
 
 const { Client } = require('pg');
 const aws = require('aws-sdk');
-const knex = require('knex')({
-  client: 'redshift',
-});
 const R = require('ramda');
 const { v4: uuid } = require('uuid');
 

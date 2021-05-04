@@ -1,3 +1,7 @@
+const knex = require('knex')({
+  client: 'redshift',
+});
+
 // create table for querying the unprocessed data
 const createUnprocessedTableQuery = key =>
   knex.schema
