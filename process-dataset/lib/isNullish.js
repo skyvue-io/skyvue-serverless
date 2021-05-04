@@ -1,4 +1,4 @@
-export const NULLISH_VALUES = [
+const NULLISH_VALUES = [
   null,
   'null',
   'nil',
