@@ -10,18 +10,17 @@ const createUnprocessedTableQuery = (key, columns) =>
         table.string(col.value);
       });
     })
-    .raw(
-      `
+    .toString()
+    .replace('create table', 'create external table')
+    .slice(0, -1) +
+  `
       ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
       STORED AS TEXTFILE
       LOCATION 's3://skyvue-datasets-queue/${key}'
       TABLE PROPERTIES (
         'skip.header.line.count'= '1'
       )
-     `.trim(),
-    )
-    .toString()
-    .replace('create table', 'create external table');
+     `.trim();
 
 const makeCaseStatement = (colId, isLast) =>
   `${NULLISH_VALUES.map(val => `when "${val}" then ${null}`).join(
