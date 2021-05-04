@@ -5,7 +5,7 @@ const knex = require('knex')({
 // create table for querying the unprocessed data
 const createUnprocessedTableQuery = key =>
   knex.schema
-    .createTable(`spectrum.${keys.slice(0, -1)}`, table => {
+    .createTable(`spectrum.${key.slice(0, -1)}`, table => {
       columns.forEach(col => {
         table.string(col.value);
       });
