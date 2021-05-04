@@ -1,6 +1,7 @@
 const knex = require('knex')({
   client: 'redshift',
 });
+const { NULLISH_VALUES } = require('./isNullish');
 
 // create table for querying the unprocessed data
 const createUnprocessedTableQuery = (key, columns) =>

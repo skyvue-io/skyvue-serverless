@@ -14,4 +14,4 @@ const NULLISH_VALUES = [
 
 const isNullish = value => NULLISH_VALUES.includes(value?.toLowerCase());
 
-module.exports = isNullish;
+module.exports = { isNullish, NULLISH_VALUES };

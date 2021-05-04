@@ -104,7 +104,7 @@ const R = require('ramda');
 const { v4: uuid } = require('uuid');
 
 const parseDataType = require('./parseDataType');
-const isNullish = require('./isNullish');
+const { isNullish } = require('./isNullish');
 
 const extractColumnData = async file => {
   const csvAsJson = await csv().fromString(file.toString('utf8'));
