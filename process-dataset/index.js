@@ -11,6 +11,12 @@ const { v4: uuid } = require('uuid');
 const selectFirst500Rows = require('./services/selectFirst500Rows');
 
 const extractColumnData = require('./lib/extractColumnData');
+const {
+  createUnprocessedTableQuery,
+  createUnloadQuery,
+  createPermanentStorageTableQuery,
+  createUnloadSelectQuery,
+} = require('./lib/queries');
 
 exports.handler = async (event, context) => {
   const awsConfig = new aws.Config({
@@ -23,10 +29,11 @@ exports.handler = async (event, context) => {
   const redshift = new Client();
   await redshift.connect();
 
+  const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
   const columns = await extractColumnData(
     await selectFirst500Rows(s3, {
       Bucket: event.Records[0].s3.bucket.name,
-      Key: decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' ')),
+      Key: key,
     }),
   );
 
@@ -48,6 +55,14 @@ exports.handler = async (event, context) => {
       }),
     })
     .promise();
+
+  await redshift.query(createUnprocessedTableQuery(key.slice(0, -1)));
+  console.log(createUnprocessedTableQuery(key.slice(0, -1)));
+
+  await redshift.query(
+    createUnloadQuery(createUnloadSelectQuery(key.slice(0, -2), boardId)),
+  );
+  console.log(createUnloadSelectQuery(key.slice(0, -2), boardId));
 
   /*
     - create two tables:

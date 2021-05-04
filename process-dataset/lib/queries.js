@@ -1,7 +1,7 @@
 // create table for querying the unprocessed data
 const createUnprocessedTableQuery = key =>
   knex.schema
-    .createTable(`spectrum.${key}`, table => {
+    .createTable(`spectrum.${keys.slice(0, -1)}`, table => {
       columns.forEach(col => {
         table.string(col.value);
       });
@@ -10,7 +10,7 @@ const createUnprocessedTableQuery = key =>
       `
       ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
       STORED AS TEXTFILE
-      LOCATION 's3://skyvue-datasets-queue/${key}/'
+      LOCATION 's3://skyvue-datasets-queue/${key}'
       TABLE PROPERTIES (
         'skip.header.line.count'= '1'
       )
