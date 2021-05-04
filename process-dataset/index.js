@@ -61,9 +61,5 @@ exports.handler = async (event, context) => {
 
   return new Promise((resolve, reject) => {
     resolve(JSON.stringify({ columns, boardId }));
-    // redshift.query('select * from information_schema.tables').then(data => {
-    //   redshift.end();
-    //   resolve(data.rows);
-    // });
   });
 };
