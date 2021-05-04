@@ -57,7 +57,7 @@ exports.handler = async (event, context) => {
   console.log(createUnprocessedTableQuery(key.slice(0, -1), columns));
   await redshift.query(createUnprocessedTableQuery(key.slice(0, -1), columns));
 
-  console.log(createUnloadSelectQuery(key.slice(0, -2), columns));
+  console.log(createUnloadQuery('select * from test', boardId));
   await redshift.query(
     createUnloadQuery(createUnloadSelectQuery(key.slice(0, -2), columns), boardId),
   );
