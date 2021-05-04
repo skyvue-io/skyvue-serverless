@@ -3,7 +3,7 @@ const knex = require('knex')({
 });
 
 // create table for querying the unprocessed data
-const createUnprocessedTableQuery = key =>
+const createUnprocessedTableQuery = (key, columns) =>
   knex.schema
     .createTable(`spectrum.${key.slice(0, -1)}`, table => {
       columns.forEach(col => {
@@ -28,7 +28,7 @@ const makeCaseStatement = (colId, isLast) =>
     '\n',
   )} else "${colId}" end as "${colId}"`;
 
-const createUnloadSelectQuery = unprocessedTableKey =>
+const createUnloadSelectQuery = (unprocessedTableKey, columns) =>
   knex
     .select(
       ...columns.map((col, index) =>
