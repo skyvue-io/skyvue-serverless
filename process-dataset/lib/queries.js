@@ -68,9 +68,8 @@ const createPermanentStorageTableQuery = (boardId, columns) =>
             table.datetime(col._id);
             break;
           default:
-            table.string();
+            table.string(col._id);
         }
-        table.string(col._id);
       });
     })
     .toString()
