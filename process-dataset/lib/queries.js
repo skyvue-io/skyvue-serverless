@@ -30,10 +30,10 @@ const makeCaseStatement = colId =>
 const createUnloadSelectQuery = (unprocessedTableKey, columns) =>
   knex
     .select(
-      ...columns.map((col, index) =>
+      ...columns.map(col =>
         knex.raw(
-          `case "spectrum"."${unprocessedTableKey}"."${col._id}" ${makeCaseStatement(
-            `"spectrum"."${unprocessedTableKey}"."${col._id}"`,
+          `case spectrum.${unprocessedTableKey}.${col._id} ${makeCaseStatement(
+            `spectrum.${unprocessedTableKey}.${col._id}`,
           )}`,
         ),
       ),
