@@ -54,7 +54,7 @@ const createUnloadQuery = (selectQuery, boardId) => `
 // create an external table that Redshift can use to query s3 data
 const createPermanentStorageTableQuery = (boardId, columns) =>
   knex.schema
-    .createTable(`spectrum.${boardId}`, table => {
+    .createTable(`spectrum.${boardId}_working`, table => {
       table.string('id');
       columns.forEach(col => {
         switch (col.dataType) {
