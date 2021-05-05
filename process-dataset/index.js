@@ -65,6 +65,7 @@ exports.handler = async (event, context) => {
   );
 
   console.log(createPermanentStorageTableQuery(boardId, columns));
+  await redshift.query(createPermanentStorageTableQuery(boardId, columns));
 
   /*
     - create two tables:
