@@ -23,7 +23,7 @@ const createUnprocessedTableQuery = (key, columns) =>
      `.trim();
 
 const makeCaseStatement = ({ value, _id }, tableKey) =>
-  `${NULLISH_VALUES.map(val => `when "${val}" then ${null}`).join(
+  `${NULLISH_VALUES.map(val => `when '${val}' then ${null}`).join(
     '\n',
   )} else spectrum."${tableKey}"."${value}" end as "${_id}"`;
 
