@@ -22,7 +22,7 @@ const createUnprocessedTableQuery = (key, columns) =>
       )
      `.trim();
 
-const makeCaseStatement = ({ value, _id }, tableKey) =>
+const makeCaseStatement = (tableKey, { value, _id }) =>
   `${NULLISH_VALUES.map(val => `when '${val}' then ${null}`).join(
     '\n',
   )} else spectrum."${tableKey}"."${value}" end as "${_id}"`;
@@ -33,8 +33,8 @@ const createUnloadSelectQuery = (unprocessedTableKey, columns) =>
       ...columns.map(col =>
         knex.raw(
           `case spectrum."${unprocessedTableKey}"."${col.value}" ${makeCaseStatement(
-            col,
             unprocessedTableKey,
+            col,
           )}`,
         ),
       ),
