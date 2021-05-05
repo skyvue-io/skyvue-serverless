@@ -73,18 +73,16 @@ const createPermanentStorageTableQuery = (boardId, columns) =>
         table.string(col._id);
       });
     })
-    .raw(
-      `
+    .toString()
+    .replace('create table', 'create external table') +
+  `
     ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
     STORED AS TEXTFILE
     LOCATION 's3://skyvue-datasets/${boardId}/rows'
     TABLE PROPERTIES (
       'skip.header.line.count'= '1'
     )
-    `.trim(),
-    )
-    .toString()
-    .replace('create table', 'create external table');
+    `.trim();
 
 module.exports = {
   createUnprocessedTableQuery,
