@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 const { Client } = require('pg');
+const { MongoClient, ObjectID } = require('mongodb');
+
 const aws = require('aws-sdk');
 const R = require('ramda');
 const { v4: uuid } = require('uuid');
@@ -16,6 +18,10 @@ const {
 } = require('./lib/queries');
 
 exports.handler = async (event, context) => {
+  const Mongo = new MongoClient(process.env.DB_URI, { useUnifiedTopology: true });
+  await Mongo.connect();
+  const mongo = Mongo.db('skyvue_db_prod');
+
   const awsConfig = new aws.Config({
     region: 'us-east-2',
     accessKeyId: process.env.AWS_ACCESSKEY,
@@ -27,7 +33,7 @@ exports.handler = async (event, context) => {
   await redshift.connect();
 
   const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-  console.log(key);
+
   const columns = await extractColumnData(
     await selectFirst500Rows(s3, {
       Bucket: event.Records[0].s3.bucket.name,
@@ -67,17 +73,16 @@ exports.handler = async (event, context) => {
   console.log(createPermanentStorageTableQuery(boardId, columns));
   await redshift.query(createPermanentStorageTableQuery(boardId, columns));
 
-  /*
-    - create two tables:
-      - Key
-      - boardId
-
-    - UNLOAD(select colName as colId from Key)
-      TO 's3://skyvue-datasets/{boardId}/rows/'
-      AS CSV
-  */
+  await mongo
+    .collection('datasets')
+    .updateOne(
+      { _id: new ObjectID(key.slice(0, -2)) },
+      { $set: { isProcessing: false } },
+    );
 
   return new Promise((resolve, reject) => {
     resolve(JSON.stringify({ columns, boardId }));
   });
 };
+
+exports.handler();
