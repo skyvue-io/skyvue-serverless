@@ -18,6 +18,7 @@ const {
 } = require('./lib/queries');
 
 exports.handler = async (event, context) => {
+  if (!event) return new Promise(resolve => resolve(undefined));
   console.log('event', JSON.stringify(event));
   const Mongo = new MongoClient(process.env.DB_URI, { useUnifiedTopology: true });
   await Mongo.connect();
@@ -83,7 +84,7 @@ exports.handler = async (event, context) => {
       { $set: { isProcessing: false } },
     );
 
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     resolve(JSON.stringify({ columns, boardId }));
   });
 };
