@@ -18,6 +18,7 @@ const {
 } = require('./lib/queries');
 
 exports.handler = async (event, context) => {
+  console.log('event', JSON.stringify(event));
   const Mongo = new MongoClient(process.env.DB_URI, { useUnifiedTopology: true });
   await Mongo.connect();
   const mongo = Mongo.db('skyvue_db_prod');
