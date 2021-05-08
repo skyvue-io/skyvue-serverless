@@ -4,8 +4,6 @@ const { Client } = require('pg');
 const { MongoClient, ObjectID } = require('mongodb');
 
 const aws = require('aws-sdk');
-const R = require('ramda');
-const { v4: uuid } = require('uuid');
 
 const selectFirst500Rows = require('./services/selectFirst500Rows');
 
@@ -43,7 +41,7 @@ exports.handler = async (event, context) => {
     }),
   );
 
-  const boardId = uuid();
+  const boardId = key.slice(0, -2);
 
   await s3
     .putObject({
