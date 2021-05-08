@@ -30,6 +30,9 @@ const makeCaseStatement = (tableKey, { value, _id }) =>
 const createUnloadSelectQuery = (unprocessedTableKey, columns) =>
   knex
     .select(
+      knex.raw(
+        'md5(cast (random() * 100 as int) || cast(random() * 100 as int) || TIMEOFDAY()) as id',
+      ),
       ...columns.map(col =>
         knex.raw(
           `case spectrum."${unprocessedTableKey}"."${col.value}" ${makeCaseStatement(
