@@ -73,6 +73,8 @@ exports.handler = async (event, context) => {
   console.log(createPermanentStorageTableQuery(boardId, columns));
   await redshift.query(createPermanentStorageTableQuery(boardId, columns));
 
+  console.log('destination table', `${boardId}_working`);
+
   await mongo
     .collection('datasets')
     .updateOne(
