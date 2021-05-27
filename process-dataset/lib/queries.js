@@ -49,7 +49,7 @@ const createUnloadSelectQuery = (unprocessedTableKey, columns) =>
 const createUnloadQuery = (selectQuery, boardId) => `
   UNLOAD ('${selectQuery}')
   TO 's3://skyvue-datasets/${boardId}/rows/'
-  iam_role 'arn:aws:iam::082311462302:role/redshift-s3-and-athena-full-access'
+  iam_role '${process.env.REDSHIFT_IAM_ROLE}'
 
   format as CSV
 `;
