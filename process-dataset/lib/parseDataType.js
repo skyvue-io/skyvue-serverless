@@ -4,9 +4,9 @@ const parseDataType = value => {
   if (/^-?(0|[1-9]\d*)(\.\d+)?$/.test(value.replace(/,/g, ''))) {
     return 'number';
   }
-  if (isValid(new Date(value))) {
-    return 'date';
-  }
+  // if (isValid(new Date(value))) {
+  //   return 'date';
+  // }
   return 'string';
 };
 
